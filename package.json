@@ -1,0 +1,16 @@
+{
+  "name": "wait-for-server",
+  "version": "0.0.1",
+  "description": "Command-line utility that waits for a server to be responsive",
+  "bin": "./wait-for-server.sh",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeffhandley/wait-for-server.git"
+  },
+  "author": "Jeff Handley <jeff@jeffhandley.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/jeffhandley/wait-for-server/issues"
+  },
+  "homepage": "https://github.com/jeffhandley/wait-for-server#readme"
+}
