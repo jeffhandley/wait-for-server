@@ -1,20 +1,16 @@
 #!/bin/bash
 
-wait=0
-waitretry=1
+seconds=1
 tries=30
-url=
-
+quietVerbose=--no-verbose
+file=/dev/null
+url=$1;shift
 
 while test $# -gt 0
 do
     case $1 in
         -w|--wait)
-            wait=$2
-            shift
-            ;;
-        -r|--waitretry)
-            waitretry=$2
+            seconds=$2
             shift
             ;;
 
@@ -22,26 +18,38 @@ do
             tries=$2
             shift
             ;;
-        -u|--url)
-            url=$2
+        -q|--quiet)
+            quietVerbose=$1
+            ;;
+        -v|--verbose)
+            quietVerbose=$1
+            ;;
+        -o|--output)
+            file=$2
             shift
             ;;
         *)
             echo >&2 "Invalid argument: $1"
             echo >&2 ""
-            echo >&2 "Usage: wait-for-server [--waitretry <seconds>] [--tries <tries>] --url <url>"
-            echo >&2 "       wait-for-server [-w <seconds>] [-t <tries>] -u <url>"
+            echo >&2 "Usage: wait-for-server <url> [--wait <seconds>] [--tries <tries>] [--quiet|--verbose] [--output <file>]"
+            echo >&2 "       wait-for-server <url> [-w <seconds>] [-t <tries>] [-q|-v] [-o <file>]"
             echo >&2 ""
-            echo >&2 "       seconds: Time in seconds to wait between checks. Defaults to 1 second."
-            echo >&2 "       tries:   Number of tries before aborting. Defaults to 30 tries."
             echo >&2 "       url:     The URL to request on each try."
+            echo >&2 "       seconds: Time in seconds to wait between tries. Defaults to 1 second."
+            echo >&2 "       tries:   Number of tries before aborting. Defaults to 30 tries."
+            echo >&2 "       quiet:   Do not output anything."
+            echo >&2 "       verbose: Use detailed output, showing each try."
+            echo >&2 "       file:    The file to write the URL response to. Defaults to /dev/null."
             exit 1
             ;;
     esac
     shift
 done
 
-[ -z "$url" ] && ( echo >&2 "No URL specified"; exit 1 )
-if [ $wait -gt 0 ]; then sleep $wait; fi
-
-wget --output-document /dev/null --waitretry=$waitretry --tries=$tries --retry-connrefused $url
+if [ -z "$url" ]
+then
+    echo >&2 "No URL specified"
+    exit 1
+else
+    wget $quietVerbose --output-document $file --waitretry=$seconds --tries=$tries --retry-connrefused $url
+fi
