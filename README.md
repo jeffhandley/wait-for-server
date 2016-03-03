@@ -8,8 +8,6 @@ wait-for-server is a command-line utility that waits for a server to become resp
 ## Usage
 
 ```
-Invalid argument: $1
-
 Usage: wait-for-server <url> [--wait <seconds>] [--tries <tries>] [--quiet|--verbose] [--output <file>]
        wait-for-server <url> [-w <seconds>] [-t <tries>] [-q|-v] [-o <file>]
 
